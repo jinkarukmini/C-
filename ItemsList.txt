@@ -1,0 +1,151 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+
+ 
+
+namespace MyFirstProject
+{
+    public class InvalidIdException : Exception  
+    {  
+        public InvalidIdException(String message) : base(message)  
+        {  
+
+ 
+
+        }  
+    } 
+    public class InvalidQuantityException : Exception  
+    {  
+        public InvalidQuantityException(String message) : base(message)  
+        {  
+
+ 
+
+        }  
+    }  
+    class BreakfastCornerApp
+    {
+        public static void Main()
+        {
+            MenuMethod();
+        }
+        public static void MenuMethod(){
+            List<Items> item= new List<Items>();
+            item.Add(new Items {ItemId=1 ,ItemName="Biriyani" ,ItemRate=200});
+            item.Add(new Items {ItemId=2 ,ItemName="Dosa" ,ItemRate=20});
+            item.Add(new Items {ItemId=3 ,ItemName="Idli" ,ItemRate=30});
+            StreamWriter f=File.CreateText(@"C:\Users\VMAdmin\Desktop\MENU.txt");
+            foreach(Items it in item){
+                string s= it.ItemId.ToString() + " " + it.ItemName + " "  + it.ItemRate.ToString() ;
+                f.WriteLine(s);
+            }
+            f.Close();
+            WriteFile(item);
+        }
+            public static void WriteFile(List<Items> myit)
+            {
+            StreamReader fi=new StreamReader(@"C:\Users\VMAdmin\Desktop\MENU.txt");
+            string st=fi.ReadLine();
+            string[] ar=st.Split(' ');
+            int a=Convert.ToInt32(ar[0]);
+            int b=Convert.ToInt32(ar[2]);
+            myit.Add(new Items {ItemId=a , ItemName=ar[1] , ItemRate=b});
+            int z=0;
+            foreach(Items it in myit){
+                Console.Write($"Item id = {it.ItemId}");
+                Console.Write($" Item Name = {it.ItemName}");
+                Console.Write($" Item Rate = {it.ItemRate}");
+                z=z+1;
+                Console.WriteLine("");
+
+                if (z==3){
+                    break;
+                } 
+
+            }
+            Console.WriteLine("");
+            Orders(myit);
+        }
+        public static void Orders(List<Items> list){
+            string a;
+            int b;
+            Console.WriteLine("You Can place an order by selecting items from the menu ");
+            Console.WriteLine("Select an item by the item id");
+            label :
+            a=Console.ReadLine();
+
+ 
+
+            try{
+                if(Convert.ToInt32(a)<1 || Convert.ToInt32(a)>3){
+                    throw new InvalidIdException("please enter id from the menu");
+                }
+
+            }
+            catch(InvalidIdException e){
+                Console.WriteLine(e);
+                goto label;
+
+            }
+            label2 :
+            Console.WriteLine("mention quantity : ");
+            b=Convert.ToInt32(Console.ReadLine());
+            try{
+                if(b<1){
+                    throw new InvalidQuantityException("please enter positive quantity");
+                }
+                else
+                    goto label3;
+
+            }
+            catch(InvalidQuantityException e){
+                Console.WriteLine(e);
+                goto label2;
+            }
+            label3 :
+            try{}
+            finally{  
+                GenerateAndPrintBill(list,a,b);
+            }
+        }
+        public static void GenerateAndPrintBill(List<Items> lis,string q, int w){
+            List<ItemOrders> li=new List<ItemOrders>();
+            int amount;
+            var z=0;
+            foreach(Items o in lis){
+                if(o.ItemId == Convert.ToInt32(q)){
+                    z=o.ItemRate;
+
+                    break;
+                }
+            }
+            amount = w * z ;
+            Console.WriteLine($"bill Amount = {amount}");
+            li.Add(new ItemOrders{ItemId=Convert.ToInt32(q) ,Qty=w , Amount=amount});
+
+            StreamWriter fi=File.CreateText(@"C:\Users\VMAdmin\Desktop\MENU1.txt");
+            foreach(ItemOrders it in li){
+                string s= it.ItemId.ToString() + " " + it.Qty + " "  + it.Amount ;
+                fi.WriteLine(s);
+            }
+            fi.Close();
+        }
+
+    }
+
+ 
+
+    class Items{
+        public int ItemId {get; set;}
+        public string ItemName {get; set;}
+        public int ItemRate {get; set;} 
+    }
+    class ItemOrders{
+        public int ItemId;
+        public int Qty;
+        public int Amount;
+    }
+}
