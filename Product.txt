@@ -1,0 +1,41 @@
+using System;
+
+public class Inventory
+        {
+            
+            private  string product;
+            private  double stockInHand;
+            public  Inventory(string product,double stockInHand)
+            {
+                this.product=product;
+                this.stockInHand=stockInHand;
+            }
+            public  double purchase(double purchaseQuantiy)
+            {
+                stockInHand = stockInHand + purchaseQuantiy ;
+                return stockInHand;
+            }
+            public  double getStockInHand()
+            {
+                return stockInHand;
+            }
+            public  void setProduct(string setproduct)
+            {
+                product=setproduct;
+            }
+            public  string getName(string getproduct)
+            {
+                return getproduct;
+            }
+            
+        }
+ 
+     class Program {
+         static void Main(string[] args) {
+        
+       Inventory d = new Inventory("Laptop i5G10", 9250.00); 
+       double m= d.getStockInHand();
+       Console.WriteLine(m);
+        }
+     }
+

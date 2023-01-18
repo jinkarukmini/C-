@@ -1,0 +1,52 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.IO; 
+public class Caffeine
+{
+    public string CoffeeBrand { get; set;}
+    public int CaffeinePercentage { get; set;}
+}
+public class CaffeineSurvey
+{
+    public List<Caffeine> CoffeeList { get; set;}
+    private int countTea;
+    public int CountTea{
+        get { return countTea;}
+        set { countTea=0; }
+    }
+public string FindValidList()
+{
+    string[] teaList = {"Netscafe","Bru", "Cafe","Brookbond", "Tajmahal"};
+    foreach (Caffeine caffeine in CoffeeList)
+    {
+        if(teaList.Contains(caffeine.CoffeeBrand))
+           countTea++;
+    }
+    if (countTea==0)
+        return "Valid Coffe Brands";
+    return "Invalid Coffee Brands";
+}
+public double GetAvgPercentage()
+{
+    double avg = CoffeeList.Average(p=>p.CaffeinePercentage);
+    return avg;
+}
+}
+class Source
+{
+    public static void Main()
+    {
+        List<Caffeine>coffee=new List<Caffeine>();
+        coffee.Add(new Caffeine(){ CoffeeBrand = "Netscafe", CaffeinePercentage =69});
+        coffee.Add(new Caffeine(){ CoffeeBrand = "Bru", CaffeinePercentage =70});
+        coffee.Add(new Caffeine(){ CoffeeBrand = "Cafe", CaffeinePercentage =56});
+        coffee.Add(new Caffeine(){ CoffeeBrand = "BrookBond", CaffeinePercentage =89});
+        coffee.Add(new Caffeine(){ CoffeeBrand = "TajMahal", CaffeinePercentage =55});
+        CaffeineSurvey cs = new CaffeineSurvey();
+        cs.CoffeeList = coffee;
+        Console.WriteLine(cs.FindValidList());
+        Console.WriteLine(cs.GetAvgPercentage());
+    }
+} 

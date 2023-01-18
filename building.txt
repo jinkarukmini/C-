@@ -1,0 +1,69 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+   class Building
+   {
+      
+       public int totalArea;
+       public int maxCount;
+     public Building(int totalArea,int maxCount)
+      {
+          this.totalArea=totalArea;
+          this.maxCount=maxCount;
+     }
+      public string builder(int[] ans)
+      {
+            string var="";
+        try
+        {
+          if(ans.Sum()==totalArea&& ans.Length==maxCount)
+          {
+            
+             var="Build the Building";
+          }
+          else if(ans.Sum()<=totalArea && ans.Length<=maxCount)
+          {
+              throw new UnderSizeException("Extra material");
+          }
+          else if(ans.Sum()>=totalArea && ans.Length>=maxCount)
+          {
+              throw new UnderSizeException("Less material");
+          }
+       
+         }
+            catch(OverSizeException ose)
+            {
+               var=ose.Message;
+            }
+            catch(UnderSizeException usex)
+            {
+                var=usex.Message;
+            }
+            return var;
+            }
+  }
+ class OverSizeException : Exception{
+     public OverSizeException(string message): base(message){}
+ }
+ class UnderSizeException : Exception{
+    // Write code here
+    public UnderSizeException(string message): base(message){}
+  }
+  class Source {
+       public static void Main(string[] args) {
+         // Enter your code here. Read input from STDIN. Print output to STDOUT 
+         Building building = new Building(50,2);
+         int[] blocks= {40,40};
+         string ans= building.builder(blocks);
+          try{
+                Console.WriteLine(building.builder(blocks));
+            }
+            catch(OverSizeException ose) {
+                        Console.WriteLine("The exception: {0}", ose.Message);
+                }
+            catch(UnderSizeException usex) {
+                        Console.WriteLine("the exception: {0}", usex.Message);
+                    }
+ }
+}
